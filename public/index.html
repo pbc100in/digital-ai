@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Digital AI — gouthamtalks</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Segoe UI,sans-serif;background:#0a0d14;color:#e2e8f0;display:flex;height:100vh}
+.sb{width:210px;background:#0f1420;border-right:1px solid #1e2940;flex-shrink:0}
+.logo{padding:20px;border-bottom:1px solid #1e2940}
+.logo h1{font-size:18px;font-weight:700;background:linear-gradient(135deg,#4F8EF7,#3dd68c);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.logo p{font-size:11px;color:#64748b;margin-top:2px}
+.ni{padding:12px 20px;cursor:pointer;color:#64748b;font-size:14px;border-left:3px solid transparent}
+.ni:hover,.ni.a{color:#4F8EF7;background:rgba(79,142,247,.1);border-left-color:#4F8EF7}
+.ni.yt.a{color:#ff0000;background:rgba(255,0,0,.1);border-left-color:#ff0000}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.tb{padding:16px 24px;background:#0f1420;border-bottom:1px solid #1e2940;font-size:18px;font-weight:600}
+.ct{flex:1;overflow-y:auto;padding:24px}
+.card{background:#131929;border:1px solid #1e2940;border-radius:12px;padding:20px;margin-bottom:16px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+.stat{background:#131929;border:1px solid #1e2940;border-radius:10px;padding:16px}
+.stat .v{font-size:28px;font-weight:700;color:#4F8EF7}
+.stat .l{font-size:12px;color:#64748b;margin-top:4px}
+table{width:100%;border-collapse:collapse}
+th{padding:10px;text-align:left;font-size:12px;color:#64748b;border-bottom:1px solid #1e2940}
+td{padding:10px;font-size:13px;border-bottom:1px solid rgba(30,41,64,.4)}
+input,textarea{width:100%;background:#0a0d14;border:1px solid #1e2940;border-radius:8px;padding:10px;color:#e2e8f0;font-size:13px;outline:none;font-family:inherit}
+textarea{min-height:100px;resize:vertical}
+input:focus,textarea:focus{border-color:#4F8EF7}
+.btn{padding:9px 18px;border-radius:8px;font-size:13px;cursor:pointer;border:none}
+.bp{background:#4F8EF7;color:#fff}
+.bg{background:#22c55e;color:#fff;padding:14px;width:100%;font-size:15px;border-radius:10px;display:block;text-align:center;cursor:pointer;border:none}
+.bo{background:transparent;color:#e2e8f0;border:1px solid #1e2940;padding:5px 10px;font-size:12px;cursor:pointer;border-radius:6px}
+.bd{background:transparent;color:#ef4444;border:1px solid rgba(239,68,68,.3);padding:5px 10px;font-size:12px;cursor:pointer;border-radius:6px}
+.byt{background:#ff0000;color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;cursor:pointer;border:none;width:100%}
+.fg{margin-bottom:14px}
+.lbl{display:block;font-size:12px;color:#64748b;margin-bottom:6px}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px}
+.connected{background:#22c55e}.connecting{background:#f59e0b}.disconnected{background:#ef4444}
+.pw{background:#0a0d14;border-radius:6px;height:8px;margin:8px 0;overflow:hidden}
+.pb{height:100%;background:linear-gradient(90deg,#4F8EF7,#3dd68c);border-radius:6px;transition:width .3s}
+.log{background:#0a0d14;border:1px solid #1e2940;border-radius:8px;padding:10px;font-size:12px;font-family:monospace;max-height:180px;overflow-y:auto;color:#64748b}
+.ok{color:#22c55e}.er{color:#ef4444}
+.sec{display:none}.sec.a{display:block}
+.up{border:2px dashed #1e2940;border-radius:10px;padding:28px;text-align:center;cursor:pointer}
+.up:hover{border-color:#4F8EF7}
+.cbr{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid rgba(30,41,64,.3);font-size:13px}
+.cbl{max-height:200px;overflow-y:auto;background:#0a0d14;border:1px solid #1e2940;border-radius:8px;padding:8px 12px}
+.chip{font-size:11px;padding:2px 8px;border-radius:20px}
+.cg{background:rgba(34,197,94,.15);color:#22c55e}
+.cr{background:rgba(239,68,68,.15);color:#ef4444}
+.cb2{background:rgba(79,142,247,.15);color:#4F8EF7}
+.cy{background:rgba(255,0,0,.15);color:#ff0000}
+.toast{position:fixed;bottom:20px;right:20px;background:#131929;border:1px solid #1e2940;border-radius:10px;padding:12px 18px;font-size:13px;display:none;z-index:99}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.empty{text-align:center;padding:24px;color:#64748b}
+.qr-box{background:#fff;border-radius:12px;padding:16px;display:inline-block;margin:12px 0}
+.qr-box img{width:200px;height:200px}
+.num-card{background:#0a0d14;border:1px solid #1e2940;border-radius:10px;padding:14px;margin-bottom:10px}
+.toggle{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.sw{position:relative;width:44px;height:24px;cursor:pointer}
+.sw input{opacity:0;width:0;height:0}
+.sl{position:absolute;top:0;left:0;right:0;bottom:0;background:#1e2940;border-radius:24px;transition:.3s}
+.sl:before{position:absolute;content:"";height:18px;width:18px;left:3px;bottom:3px;background:#64748b;border-radius:50%;transition:.3s}
+.sw input:checked+.sl{background:#22c55e}
+.sw input:checked+.sl:before{transform:translateX(20px);background:#fff}
+</style>
+</head>
+<body>
+<div class="sb">
+  <div class="logo"><h1>Digital AI</h1><p>gouthamtalks</p></div>
+  <div class="ni a"  onclick="go(this,'dashboard')">Dashboard</div>
+  <div class="ni"    onclick="go(this,'contacts')">Contacts</div>
+  <div class="ni"    onclick="go(this,'compose')">Compose & Send</div>
+  <div class="ni yt" onclick="go(this,'youtube')">YouTube Auto-Send</div>
+  <div class="ni"    onclick="go(this,'numbers')">Numbers</div>
+  <div class="ni"    onclick="go(this,'history')">History</div>
+</div>
+<div class="main">
+
+<!-- Dashboard -->
+<div id="sec-dashboard" class="sec a">
+  <div class="tb">Dashboard</div>
+  <div class="ct">
+    <div class="stats">
+      <div class="stat"><div class="v" id="sc">0</div><div class="l">Contacts</div></div>
+      <div class="stat"><div class="v" style="color:#22c55e" id="ss">0</div><div class="l">Sent</div></div>
+      <div class="stat"><div class="v" style="color:#f59e0b" id="sn">0</div><div class="l">Numbers</div></div>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:14px;font-size:15px">Recent Campaigns</h3>
+      <table><thead><tr><th>Date</th><th>Type</th><th>Message</th><th>Total</th><th>Sent</th><th>Failed</th></tr></thead>
+      <tbody id="recent"><tr><td colspan="6" class="empty">No campaigns yet</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+
+<!-- Contacts -->
+<div id="sec-contacts" class="sec">
+  <div class="tb">Contacts <span id="cbadge" style="font-size:13px;color:#64748b;font-weight:400;margin-left:8px"></span></div>
+  <div class="ct">
+    <div class="g2">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+          <h3 style="font-size:15px">Contact List</h3>
+          <button class="bo" onclick="clrAll()">Clear All</button>
+        </div>
+        <table><thead><tr><th>Name</th><th>Phone</th><th></th></tr></thead>
+        <tbody id="ctbl"><tr><td colspan="3" class="empty">No contacts yet</td></tr></tbody></table>
+      </div>
+      <div>
+        <div class="card">
+          <h3 style="font-size:15px;margin-bottom:14px">Upload CSV</h3>
+          <div class="up" onclick="document.getElementById('csv').click()">
+            <p style="color:#64748b;font-size:14px">Click to upload CSV</p>
+            <p style="color:#64748b;font-size:12px;margin-top:4px">Format: name, phone</p>
+          </div>
+          <input type="file" id="csv" accept=".csv" style="display:none" onchange="upCSV(this)">
+        </div>
+        <div class="card">
+          <h3 style="font-size:15px;margin-bottom:14px">Add Manually</h3>
+          <div class="fg"><label class="lbl">Name</label><input id="an" placeholder="Suresh Kumar"></div>
+          <div class="fg"><label class="lbl">Phone</label><input id="ap" placeholder="+919876543210"></div>
+          <button class="btn bp" style="width:100%" onclick="addC()">Add Contact</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Compose -->
+<div id="sec-compose" class="sec">
+  <div class="tb">Compose & Send</div>
+  <div class="ct">
+    <div class="g2">
+      <div>
+        <div class="card">
+          <h3 style="font-size:15px;margin-bottom:14px">Message</h3>
+          <div class="fg"><textarea id="msg" placeholder="Hello {name}, your message here..."></textarea></div>
+          <button class="bo" onclick="ins('{name}')">+ {name}</button>
+        </div>
+        <div class="card">
+          <h3 style="font-size:15px;margin-bottom:12px">Progress</h3>
+          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px">
+            <span id="pl">Ready</span><span id="pc" style="color:#64748b">0/0</span>
+          </div>
+          <div class="pw"><div class="pb" id="pb" style="width:0%"></div></div>
+          <div class="log" id="plog">Waiting...</div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <h3 style="font-size:15px;margin-bottom:12px">Select Contacts</h3>
+          <div style="display:flex;gap:8px;margin-bottom:10px">
+            <button class="bo" onclick="selAll(true)">All</button>
+            <button class="bo" onclick="selAll(false)">None</button>
+          </div>
+          <div class="cbl" id="cbl"><p style="color:#64748b;padding:8px;font-size:13px">No contacts</p></div>
+          <p style="font-size:12px;color:#64748b;margin-top:6px"><span id="selc">0</span> selected</p>
+        </div>
+        <br>
+        <button class="bg" onclick="send()">Send Messages</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- YouTube -->
+<div id="sec-youtube" class="sec">
+  <div class="tb" style="color:#ff4444">YouTube Auto-Send</div>
+  <div class="ct">
+    <div class="g2">
+      <div class="card">
+        <h3 style="font-size:15px;margin-bottom:16px;color:#ff4444">Settings</h3>
+        <div class="fg"><label class="lbl">YouTube API Key</label><input id="yt-key" placeholder="AIzaSy..."></div>
+        <div class="fg"><label class="lbl">Channel ID</label><input id="yt-ch" placeholder="UCxxxxxxxxxx"></div>
+        <div class="fg"><label class="lbl">Check every (minutes)</label><input id="yt-int" type="number" value="30"></div>
+        <div class="fg"><label class="lbl">Message</label><textarea id="yt-msg" placeholder="Hey {name}! New video: {link}"></textarea></div>
+        <div class="toggle">
+          <label class="sw"><input type="checkbox" id="yt-auto" onchange="toggleAuto()"><span class="sl"></span></label>
+          <span id="yt-lbl" style="font-size:14px;color:#64748b">Auto-send OFF</span>
+        </div>
+        <button class="btn bp" style="width:100%;margin-bottom:8px" onclick="saveYT()">Save Settings</button>
+        <button class="byt" onclick="checkYT()">Check for New Video Now</button>
+      </div>
+      <div class="card">
+        <h3 style="font-size:15px;margin-bottom:12px">How It Works</h3>
+        <div style="font-size:13px;color:#64748b;line-height:1.8">
+          <p>1. Enter YouTube API key</p>
+          <p>2. Enter Channel ID</p>
+          <p>3. Write message with {link}</p>
+          <p>4. Turn Auto-send ON</p>
+          <p>5. Upload video → everyone gets notified automatically!</p>
+        </div>
+        <br>
+        <div id="yt-result" style="display:none;background:#0a0d14;border-radius:8px;padding:12px">
+          <p style="font-size:13px;color:#ff4444;font-weight:500" id="yt-vtitle"></p>
+          <a id="yt-vlink" target="_blank" style="font-size:12px;color:#4F8EF7"></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Numbers -->
+<div id="sec-numbers" class="sec">
+  <div class="tb">Numbers <span style="font-size:13px;color:#64748b;font-weight:400;margin-left:8px">Round Robin</span></div>
+  <div class="ct">
+    <div class="g2">
+      <div>
+        <div class="card">
+          <h3 style="font-size:15px;margin-bottom:14px">Connected Numbers</h3>
+          <div id="nums-list"><p class="empty">No numbers yet</p></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3 style="font-size:15px;margin-bottom:14px">Add New Number</h3>
+        <div class="fg"><label class="lbl">Name (e.g. Phone1, Work)</label><input id="new-num-name" placeholder="Phone 1"></div>
+        <button class="btn bp" style="width:100%;margin-bottom:16px" onclick="addNumber()">Add Number</button>
+        <div id="qr-area" style="display:none;text-align:center">
+          <p style="font-size:13px;color:#64748b;margin-bottom:8px">Scan with WhatsApp</p>
+          <div class="qr-box"><img id="qr-img" src="" alt="QR Code"></div>
+          <p style="font-size:12px;color:#64748b">WhatsApp > 3 dots > Linked Devices > Link a Device</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- History -->
+<div id="sec-history" class="sec">
+  <div class="tb">History</div>
+  <div class="ct">
+    <div class="card">
+      <table><thead><tr><th>Date</th><th>Type</th><th>Message</th><th>Total</th><th>Sent</th><th>Failed</th><th>Status</th></tr></thead>
+      <tbody id="htbl"><tr><td colspan="7" class="empty">No history yet</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const get  = u => fetch(u).then(r => r.json())
+const post = (u,d) => fetch(u,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(d)}).then(r=>r.json())
+
+function go(el, s) {
+  document.querySelectorAll(".sec").forEach(x => x.classList.remove("a"))
+  document.querySelectorAll(".ni").forEach(x => x.classList.remove("a"))
+  document.getElementById("sec-"+s).classList.add("a")
+  el.classList.add("a")
+  if(s==="contacts")  ldC()
+  if(s==="compose")   ldComp()
+  if(s==="numbers")   ldNums()
+  if(s==="history")   ldH()
+  if(s==="dashboard") ldD()
+  if(s==="youtube")   ldYT()
+}
+
+function toast(m, t="ok") {
+  const el = document.getElementById("toast")
+  el.textContent = m; el.style.display = "block"
+  el.style.borderColor = t==="err" ? "#ef4444" : "#22c55e"
+  setTimeout(() => el.style.display = "none", 3000)
+}
+
+async function ldD() {
+  const [c,h,n] = await Promise.all([get("/api/contacts"), get("/api/history"), get("/api/numbers")])
+  document.getElementById("sc").textContent = c.length
+  document.getElementById("sn").textContent = n.filter(x => x.status==="connected").length
+  document.getElementById("ss").textContent = h.reduce((a,x) => a+(x.sent||0), 0)
+  const tb = document.getElementById("recent")
+  tb.innerHTML = h.length ? h.slice(0,5).map(x => `
+    <tr>
+      <td style="color:#64748b;font-size:12px">${new Date(x.date).toLocaleString()}</td>
+      <td><span class="chip ${x.type==='youtube'?'cy':'cb2'}">${x.type==='youtube'?'YouTube':'Manual'}</span></td>
+      <td>${x.message}...</td><td>${x.total}</td>
+      <td style="color:#22c55e">${x.sent}</td><td style="color:#ef4444">${x.failed}</td>
+    </tr>`).join("") : `<tr><td colspan="6" class="empty">No campaigns yet</td></tr>`
+}
+
+async function ldC() {
+  const a = await get("/api/contacts")
+  document.getElementById("cbadge").textContent = a.length + " contacts"
+  const tb = document.getElementById("ctbl")
+  tb.innerHTML = a.length ? a.map(c => `
+    <tr><td>${c.name}</td><td style="color:#64748b">${c.phone}</td>
+    <td><button class="bd" onclick="delC(${c.id})">Del</button></td></tr>`
+  ).join("") : `<tr><td colspan="3" class="empty">No contacts yet</td></tr>`
+}
+
+async function addC() {
+  const n = document.getElementById("an").value.trim(), p = document.getElementById("ap").value.trim()
+  if(!n||!p) return toast("Fill both fields","err")
+  await post("/api/contacts", {name:n, phone:p})
+  document.getElementById("an").value = ""; document.getElementById("ap").value = ""
+  await ldC(); toast("Contact added!")
+}
+
+async function delC(id) { await fetch("/api/contacts/"+id,{method:"DELETE"}); await ldC() }
+async function clrAll() {
+  if(!confirm("Delete all contacts?")) return
+  await fetch("/api/contacts",{method:"DELETE"}); await ldC(); toast("Cleared")
+}
+
+async function upCSV(input) {
+  const fd = new FormData(); fd.append("file", input.files[0])
+  const r = await fetch("/api/contacts/upload",{method:"POST",body:fd}).then(x=>x.json())
+  await ldC(); toast("Added " + r.added + " contacts!"); input.value = ""
+}
+
+async function ldComp() {
+  const a = await get("/api/contacts")
+  const box = document.getElementById("cbl")
+  box.innerHTML = a.length ? a.map(c => `
+    <div class="cbr"><input type="checkbox" class="cb" value="${c.id}" checked onchange="cntS()">
+    <span>${c.name}</span><span style="color:#64748b;font-size:11px;margin-left:auto">${c.phone}</span></div>`
+  ).join("") : "<p style='color:#64748b;padding:8px;font-size:13px'>No contacts. Add first.</p>"
+  cntS()
+}
+
+function selAll(v) { document.querySelectorAll(".cb").forEach(c => c.checked=v); cntS() }
+function cntS() { document.getElementById("selc").textContent = document.querySelectorAll(".cb:checked").length }
+function ins(t) { const ta=document.getElementById("msg"); const p=ta.selectionStart; ta.value=ta.value.substring(0,p)+t+ta.value.substring(p); ta.focus() }
+
+async function send() {
+  const msg = document.getElementById("msg").value.trim()
+  if(!msg) return toast("Write a message","err")
+  const sel = [...document.querySelectorAll(".cb:checked")].map(c => c.value)
+  if(!sel.length) return toast("Select contacts","err")
+  if(!confirm("Send to " + sel.length + " contacts?")) return
+  document.getElementById("plog").innerHTML = ""
+  document.getElementById("pb").style.width = "0%"
+  document.getElementById("pl").textContent = "Sending..."
+  document.getElementById("pc").textContent = "0/" + sel.length
+  await post("/api/send", {message:msg, contactIds:sel})
+}
+
+// SSE
+const es = new EventSource("/api/events")
+es.onmessage = e => {
+  const d = JSON.parse(e.data)
+  if(d.type==="qr") {
+    document.getElementById("qr-area").style.display = "block"
+    document.getElementById("qr-img").src = d.qr
+    toast("QR ready for " + d.name + " — scan now!")
+  }
+  if(d.type==="connected") {
+    document.getElementById("qr-area").style.display = "none"
+    toast(d.name + " connected!")
+    ldNums(); ldD()
+  }
+  if(d.type==="sent"||d.type==="failed") {
+    const pct = Math.round((d.sent+d.failed)/d.total*100)
+    const log = document.getElementById("plog")
+    const ln  = document.createElement("div")
+    ln.className = d.type==="sent" ? "ok" : "er"
+    ln.textContent = (d.type==="sent"?"OK ":"FAIL ") + d.name + (d.number?" ["+d.number+"]":"")
+    log.appendChild(ln); log.scrollTop = log.scrollHeight
+    document.getElementById("pb").style.width = pct + "%"
+    document.getElementById("pc").textContent = (d.sent+d.failed) + "/" + d.total
+    document.getElementById("pl").textContent = "Sent: "+d.sent+" Failed: "+d.failed
+  }
+  if(d.type==="done") { toast("Done! Sent: "+d.sent+" Failed: "+d.failed); ldH(); ldD() }
+  if(d.type==="error") toast("Error: "+d.error,"err")
+  if(d.type==="youtube_start") toast("YouTube: Sending to "+d.total+" contacts...")
+  if(d.type==="youtube_done") { toast("YouTube done! Sent: "+d.sent); ldH(); ldD() }
+}
+
+async function ldNums() {
+  const nums = await get("/api/numbers")
+  const box  = document.getElementById("nums-list")
+  box.innerHTML = nums.length ? nums.map(n => `
+    <div class="num-card">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <span class="dot ${n.status}"></span>
+          <strong>${n.name}</strong>
+          <span style="font-size:12px;color:#64748b;margin-left:6px">${n.status}</span>
+        </div>
+        <button class="bd" onclick="removeNum('${n.id}')">Remove</button>
+      </div>
+    </div>`).join("") : "<p class='empty'>No numbers yet. Add one →</p>"
+}
+
+async function addNumber() {
+  const name = document.getElementById("new-num-name").value.trim()
+  if(!name) return toast("Enter a name","err")
+  toast("Adding " + name + "... QR will appear shortly")
+  const r = await post("/api/numbers/add", { name })
+  if(r.ok) {
+    document.getElementById("new-num-name").value = ""
+    document.getElementById("qr-area").style.display = "block"
+    toast("Scan QR code with " + name)
+    // Poll for QR
+    let tries = 0
+    const poll = setInterval(async () => {
+      const q = await get("/api/numbers/qr/" + r.id)
+      if(q.ok) {
+        document.getElementById("qr-img").src = q.qr
+        clearInterval(poll)
+      }
+      if(++tries > 20) clearInterval(poll)
+    }, 2000)
+  }
+}
+
+async function removeNum(id) {
+  if(!confirm("Remove this number?")) return
+  await fetch("/api/numbers/"+id, {method:"DELETE"})
+  await ldNums(); toast("Number removed")
+}
+
+async function ldH() {
+  const h = await get("/api/history")
+  const tb = document.getElementById("htbl")
+  tb.innerHTML = h.length ? h.map(x => `
+    <tr>
+      <td style="color:#64748b;font-size:12px">${new Date(x.date).toLocaleString()}</td>
+      <td><span class="chip ${x.type==='youtube'?'cy':'cb2'}">${x.type==='youtube'?'YouTube':'Manual'}</span></td>
+      <td>${x.message}${x.link?` <a href="${x.link}" target="_blank" style="color:#4F8EF7;font-size:11px">↗</a>`:""}</td>
+      <td>${x.total}</td><td style="color:#22c55e">${x.sent}</td><td style="color:#ef4444">${x.failed}</td>
+      <td><span class="chip ${x.failed===0?"cg":x.sent===0?"cr":"cb2"}">${x.failed===0?"Perfect":x.sent===0?"Failed":"Partial"}</span></td>
+    </tr>`).join("") : `<tr><td colspan="7" class="empty">No history yet</td></tr>`
+}
+
+async function ldYT() {
+  const y = await get("/api/youtube")
+  document.getElementById("yt-key").value = y.apiKey || ""
+  document.getElementById("yt-ch").value  = y.channelId || ""
+  document.getElementById("yt-int").value = y.interval || 30
+  document.getElementById("yt-msg").value = y.message || ""
+  document.getElementById("yt-auto").checked = y.autoSend || false
+  document.getElementById("yt-lbl").textContent = y.autoSend ? "Auto-send ON" : "Auto-send OFF"
+  document.getElementById("yt-lbl").style.color = y.autoSend ? "#22c55e" : "#64748b"
+}
+
+async function saveYT() {
+  await post("/api/youtube", {
+    apiKey:    document.getElementById("yt-key").value.trim(),
+    channelId: document.getElementById("yt-ch").value.trim(),
+    interval:  parseInt(document.getElementById("yt-int").value) || 30,
+    message:   document.getElementById("yt-msg").value.trim(),
+    autoSend:  document.getElementById("yt-auto").checked
+  })
+  toast("YouTube settings saved!")
+}
+
+function toggleAuto() {
+  const on = document.getElementById("yt-auto").checked
+  document.getElementById("yt-lbl").textContent = on ? "Auto-send ON" : "Auto-send OFF"
+  document.getElementById("yt-lbl").style.color = on ? "#22c55e" : "#64748b"
+}
+
+async function checkYT() {
+  toast("Checking...")
+  const r = await fetch("/api/youtube/check",{method:"POST"}).then(x=>x.json())
+  if(r.ok) {
+    document.getElementById("yt-result").style.display = "block"
+    document.getElementById("yt-vtitle").textContent = r.video.title
+    document.getElementById("yt-vlink").textContent  = r.video.link
+    document.getElementById("yt-vlink").href         = r.video.link
+    toast("Latest: " + r.video.title)
+  } else toast(r.error,"err")
+}
+
+ldD()
+</script>
+</body>
+</html>
